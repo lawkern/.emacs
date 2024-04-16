@@ -15,21 +15,38 @@
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 
+(setq-default make-backup-files nil)
+(setq-default create-lockfiles nil)
+
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (column-number-mode 1)
 (fringe-mode '(1 . 1))
 
+(setq-default fill-column 80)
 (setq-default truncate-lines 0)
 
-(setq tab-width 4)
-(setq indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+
+(setq-default c-default-style "linux")
+(setq-default c-basic-offset 3)
+
+(defun configure-c-mode ()
+  (c-toggle-comment-style -1)
+  (c-set-offset 'case-label '+))
+
+(add-hook 'c-mode-common-hook 'configure-c-mode)
+
+(setq-default js-indent-level 2)
+(setq-default js-switch-indent-offset 2)
+(setq-default css-indent-offset 2)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq show-paren-delay 0)
 (show-paren-mode 1)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
