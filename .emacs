@@ -137,6 +137,7 @@
 (set-face-attribute 'isearch        nil :foreground nil :background b-1)
 (set-face-attribute 'lazy-highlight nil :foreground b-0 :underline t)
 
+(require 'compile)
 (set-face-attribute 'compilation-mode-line-exit nil :inherit 'success)
 (set-face-attribute 'compilation-mode-line-fail nil :inherit 'error)
 
@@ -144,6 +145,7 @@
 (set-face-attribute 'ido-subdir      nil :foreground y-2)
 (set-face-attribute 'ido-only-match  nil :foreground y-1 :weight 'bold)
 
+(require 'whitespace)
 (set-face-attribute 'whitespace-newline nil :foreground surface-3 :background surface-1)
 (set-face-attribute 'whitespace-space   nil :foreground surface-3 :background surface-1)
 (set-face-attribute 'whitespace-tab     nil :foreground surface-3 :background surface-1)
