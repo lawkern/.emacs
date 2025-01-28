@@ -4,6 +4,12 @@
 (global-set-key (kbd "M-n") 'forward-paragraph)
 (global-set-key (kbd "M-p") 'backward-paragraph)
 
+(global-set-key (kbd "C-'") 'recompile)
+(global-set-key (kbd "C-M-'") 'compile)
+
+(global-set-key (kbd "<f2>") 'rgrep)
+(global-set-key (kbd "<f5>") 'recompile)
+
 (defun move-line-up ()
   (interactive)
   (transpose-lines 1)
@@ -18,17 +24,15 @@
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
-(global-set-key (kbd "<f2>") 'rgrep)
-(global-set-key (kbd "<f5>") 'recompile)
-
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "C-h h") nil)
-(global-set-key (kbd "C-x C-c") nil)
+;; (global-set-key (kbd "C-x C-c") nil)
 
-(setq next-line-add-newlines t)
+(setq next-line-add-newlines nil)
 (setq use-short-answers t)
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
+(setq completion-ignore-case t)
 
 (setq-default make-backup-files nil)
 (setq-default create-lockfiles nil)
@@ -49,6 +53,7 @@
 (setq-default c-basic-offset 3)
 
 (defun configure-c-mode ()
+  (setq indent-tabs-mode nil)
   (c-toggle-comment-style -1)
   (c-set-offset 'case-label '+))
 
@@ -65,15 +70,15 @@
 
 (setq-default isearch-allow-motion t)
 
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-create-new-buffer 'always)
-(setq-default confirm-nonexistent-file-or-buffer nil)
-(ido-mode 1)
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-everywhere t)
+;; (setq ido-create-new-buffer 'always)
+;; (setq-default confirm-nonexistent-file-or-buffer nil)
+;; (ido-mode 1)
 
 ;; Font display:
-(add-to-list 'default-frame-alist '(font . "Iosevka Law-12"))
-(set-face-font 'fixed-pitch "Iosevka Law")
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-10"))
+(set-face-font 'fixed-pitch "JetBrains Mono")
 
 (setq dark-mode t)
 
@@ -141,9 +146,9 @@
 (set-face-attribute 'compilation-mode-line-exit nil :inherit 'success)
 (set-face-attribute 'compilation-mode-line-fail nil :inherit 'error)
 
-(set-face-attribute 'ido-first-match nil :foreground y-1 :weight 'bold)
-(set-face-attribute 'ido-subdir      nil :foreground y-2)
-(set-face-attribute 'ido-only-match  nil :foreground y-1 :weight 'bold)
+;; (set-face-attribute 'ido-first-match nil :foreground y-1 :weight 'bold)
+;; (set-face-attribute 'ido-subdir      nil :foreground y-2)
+;; (set-face-attribute 'ido-only-match  nil :foreground y-1 :weight 'bold)
 
 (require 'whitespace)
 (set-face-attribute 'whitespace-newline nil :foreground surface-3 :background surface-1)
