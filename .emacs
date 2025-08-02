@@ -37,11 +37,12 @@
 (setq-default make-backup-files nil)
 (setq-default create-lockfiles nil)
 
-(menu-bar-mode 0)
 (tool-bar-mode 0)
-(scroll-bar-mode 0)
-(column-number-mode 1)
-(fringe-mode '(1 . 1))
+(menu-bar-mode 0)
+(unless (display-graphic-p)
+  (scroll-bar-mode 0)
+  (column-number-mode 1)
+  (fringe-mode '(1 . 1)))
 
 (setq-default fill-column 80)
 (setq-default truncate-lines 0)
