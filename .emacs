@@ -1,11 +1,13 @@
 (global-set-key (kbd "C-;") 'execute-extended-command)
 (global-set-key (kbd "C-'") 'recompile)
 (global-set-key (kbd "C-M-'") 'compile)
-(global-set-key (kbd "C-c b") 'revert-buffer)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-n") 'forward-paragraph)
 (global-set-key (kbd "M-p") 'backward-paragraph)
-(global-set-key (kbd "C-c C-f") 'ff-find-other-file)
+(global-set-key (kbd "C-c b") 'revert-buffer)
+(global-set-key (kbd "C-c f") 'ff-find-other-file)
+(global-set-key (kbd "C-c c") 'quick-calc)
+
 
 (defun move-line-up ()
   (interactive)
@@ -37,12 +39,13 @@
 (setq-default make-backup-files nil)
 (setq-default create-lockfiles nil)
 
-(tool-bar-mode 0)
 (menu-bar-mode 0)
-(unless (display-graphic-p)
+(when (display-graphic-p)
+  (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  (column-number-mode 1)
   (fringe-mode '(1 . 1)))
+
+(column-number-mode 1)
 
 (setq-default fill-column 80)
 (setq-default truncate-lines 0)
@@ -63,13 +66,20 @@
   (local-set-key (kbd "C-'") 'recompile)
   (setq indent-tabs-mode nil)
   (c-toggle-comment-style -1)
-  (c-set-offset 'case-label '+))
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'statement-cont 0))
 
 (add-hook 'c-mode-common-hook 'configure-c-mode)
 
-(setq-default js-indent-level 2)
-(setq-default js-switch-indent-offset 2)
-(setq-default css-indent-offset 2)
+(defun configure-org-mode ()
+  ;; NOTE: Org-mode has some nerve with the keybindings it tries to steal.
+  (define-key org-mode-map (kbd "C-'") nil))
+
+(add-hook 'org-mode-hook 'configure-org-mode)
+
+(setq-default js-indent-level 3)
+(setq-default js-switch-indent-offset 3)
+(setq-default css-indent-offset 3)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -79,7 +89,7 @@
 (setq-default isearch-allow-motion t)
 
 ;; (add-to-list 'default-frame-alist '(font . "Iosevka Law-10"))
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-9"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-10"))
 
 ;; (set-face-font 'fixed-pitch "Iosevka Law")
 (set-face-font 'fixed-pitch "JetBrains Mono")
@@ -139,7 +149,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(font-lock-maximum-decoration '((t . 1)))
- '(package-selected-packages '(ada-mode magit rainbow-mode yasnippet)))
+ '(package-selected-packages '(ada-mode leetcode magit rainbow-mode yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
