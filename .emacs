@@ -8,7 +8,6 @@
 (global-set-key (kbd "C-c f") 'ff-find-other-file)
 (global-set-key (kbd "C-c c") 'quick-calc)
 
-
 (defun move-line-up ()
   (interactive)
   (transpose-lines 1)
@@ -50,14 +49,28 @@
 (setq-default fill-column 80)
 (setq-default truncate-lines 0)
 
-(setq-default tab-width 8)
+;; NOTE: Don't let Emacs create splits when new windows are created
+;; e.g. *compilation*. Try to reuse manually created splits, or else stick to
+;; one window.
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window
+         display-buffer-reuse-mode-window
+         display-buffer-use-some-window)))
+
+(setq-default tab-width 3)
 (setq-default indent-tabs-mode nil)
 
 (setq-default c-default-style "linux")
 (setq-default c-basic-offset 3)
 
-;; (setq compilation-search-path '("." ".."))
-(setq compile-command "make -C .. ")
+;; NOTE: It's annoying that Emacs can't find a project's Makefile by default if
+;; you're working in a subdirectory.
+(defun compile-with-closest-makefile ()
+  (let ((path-to-makefile (locate-dominating-file default-directory "Makefile")))
+    (if path-to-makefile
+        (format "make -C %s " path-to-makefile)
+      "make ")))
+(setq-default compile-command '(compile-with-closest-makefile))
 
 (require 'grep)
 (grep-apply-setting 'grep-command "grep -nRHe ")
@@ -67,7 +80,16 @@
   (setq indent-tabs-mode nil)
   (c-toggle-comment-style -1)
   (c-set-offset 'case-label '+)
-  (c-set-offset 'statement-cont 0))
+  (c-set-offset 'statement-cont 0)
+
+  (setq-local whitespace-style '(face tabs tab-mark))
+  (whitespace-mode 1)
+
+  (font-lock-add-keywords
+   nil
+   '(("\\<\\(0[xX][0-9A-Fa-f]+\\|0[bB][01]+\\|0[0-7]+\\|[0-9]+\\)\\(?:\\.[0-9]+\\)?\\(?:[eE][+-]?[0-9]+\\)?\\(?:[uUlLfF]+\\)?\\>"
+      0 font-lock-string-face)))
+  )
 
 (add-hook 'c-mode-common-hook 'configure-c-mode)
 
@@ -89,13 +111,14 @@
 (setq-default isearch-allow-motion t)
 
 ;; (add-to-list 'default-frame-alist '(font . "Iosevka Law-10"))
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-10"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-9"))
 
 ;; (set-face-font 'fixed-pitch "Iosevka Law")
 (set-face-font 'fixed-pitch "JetBrains Mono")
 
+(setq modus-themes-common-palette-overrides '((preprocessor fg-main)))
 (load-theme 'modus-vivendi t nil)
-(set-face-attribute 'region nil :background 'unspecified :foreground 'unspecified :inherit nil)
+;; (set-face-attribute 'region nil :background 'unspecified :foreground 'unspecified :inherit nil)
 
 (modus-themes-with-colors
  (defface font-lock-comment-note
@@ -130,6 +153,7 @@
 
 (add-hook 'prog-mode-hook 'highlight-comment-keywords)
 
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; OS-dependent:
 (when (eq system-type 'windows-nt)
@@ -143,17 +167,19 @@
   (setq frame-title-format nil)
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(font-lock-maximum-decoration '((t . 1)))
- '(package-selected-packages '(ada-mode leetcode magit rainbow-mode yasnippet)))
+ '(package-selected-packages '(magit nasm-mode rg)))
+
+(put 'upcase-region 'disabled nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
-(put 'upcase-region 'disabled nil)
+ '(whitespace-tab ((t (:background "yellow" :foreground "red")))))
